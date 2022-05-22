@@ -20,9 +20,10 @@ module.exports = {
     }
 
     // verify token and get user data out of it
+    // contaxt object has user varaible of who is doing the thing
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
-      req.user = data;
+      req.user = data; // appends to context
     } catch {
       console.log('Invalid token');
       return res.status(400).json({ message: 'invalid token!' });
@@ -35,5 +36,7 @@ module.exports = {
     const payload = { username, email, _id };
 
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+
+    
   },
 };
