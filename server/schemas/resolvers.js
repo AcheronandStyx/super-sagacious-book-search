@@ -52,28 +52,28 @@ const resolvers = {
         return err;
       }
     },
-  },
-  login: async (parent, args) => {
-    const user = await User.findOne({ email });
-    if (!user) {
-      // if no user found, error out
-      throw new AuthenticationError("Can't find this user");
-    }
-    // isCorrectPassword is a custom method fromt the User model that checks the PW
-    // and returns a boolean
-    const correctPw = await user.isCorrectPassword(password);
-    if (!correctPw) {
-      // if bad password, error out
-      throw new AuthenticationError("incorrect credentials");
-    }
-    // assign a token and return it and the authenticated user
-    const token = signToken(user);
-    return { token, user };
-  },
-  createUser: async (parent, args) => {
-    const user = await User.create(args); // create the user with passed in args
-    const token = signToken(user); // assign a token
-    return { token, user }; // return the token and user
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        // if no user found, error out
+        throw new AuthenticationError("Can't find this user");
+      }
+      // isCorrectPassword is a custom method fromt the User model that checks the PW
+      // and returns a boolean
+      const correctPw = await user.isCorrectPassword(password);
+      if (!correctPw) {
+        // if bad password, error out
+        throw new AuthenticationError("incorrect credentials");
+      }
+      // assign a token and return it and the authenticated user
+      const token = signToken(user);
+      return { token, user };
+    },
+    createUser: async (parent, args) => {
+      const user = await User.create(args); // create the user with passed in args
+      const token = signToken(user); // assign a token
+      return { token, user }; // return the token and user
+    },
   },
 };
 
