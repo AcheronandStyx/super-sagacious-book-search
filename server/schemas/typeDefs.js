@@ -39,14 +39,16 @@ const typeDefs = gql`
   }
 
   type Query {
+    getSingleUser: User
     userId(_id: ID): User
   }
+
 
   type Mutation {
     login(email: String!, password: String!): Auth
     createUser(username: String!, email: String!, password: String!): User
     saveBook(book: BookInput): User
-    deleteBook(user: UserInput)
+    deleteBook(bookId: String): User
   }
 `;
 // get user by ID and GET ME
